@@ -1,8 +1,10 @@
 
-import { AppBar, Toolbar, styled, Button } from '@mui/material'; 
+import { AppBar, Toolbar, styled } from '@mui/material'; 
 import { Link } from 'react-router-dom';
 
 import { useNavigate } from 'react-router-dom';
+
+import { API } from '../../service/api';
 
 
 const Component = styled(AppBar)`
@@ -23,7 +25,12 @@ const Header = () => {
 
     const navigate = useNavigate();
 
-    const logout = async () => navigate('/account');
+    const logout = async () => {
+        const refreshToken = sessionStorage.getItem('refreshToken');
+        await API.userLogout({ token: refreshToken });
+        sessionStorage.clear();
+        navigate('/account');
+    };
         
     return (
         <Component>
@@ -31,7 +38,7 @@ const Header = () => {
                 <Link to='/'>HOME</Link>
                 <Link to='/about'>ABOUT</Link>
                 <Link to='/contact'>CONTACT</Link>
-                <Link to='/account'>LOGOUT</Link>
+                <Link onClick={() => logout()}>LOGOUT</Link>
             </Container>
         </Component>
     )
