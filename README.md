@@ -10,22 +10,23 @@ Blog-Website-web 是一个基于 MERN 技术栈开发的博客网站应用。该
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| React | 17.0.2 | 前端框架 |
-| React Router DOM | 6.3.0 | 路由管理 |
-| Material-UI (MUI) | 5.8.0 | UI 组件库 |
-| Axios | 0.21.1 | HTTP 请求库 |
+| React | 18.3.1 | 前端框架 |
+| React Router DOM | 6.28.0 | 路由管理 |
+| Material-UI (MUI) | 6.1.5 | UI 组件库 |
+| Axios | 1.7.7 | HTTP 请求库 |
+| Vite | 8.0.0 | 构建工具 |
 
 ### 后端技术栈
 
 | 技术 | 版本 | 说明 |
 |------|------|------|
-| Node.js | - | 运行环境 |
-| Express | 4.18.1 | Web 服务器框架 |
+| Node.js | 20+ | 运行环境 |
+| Express | 4.21.2 | Web 服务器框架 |
 | MongoDB | - | 数据库 |
-| Mongoose | 6.3.4 | MongoDB ODM |
-| JWT | 8.5.1 | 身份认证 |
-| Bcrypt | 5.0.1 | 密码加密 |
-| Multer | 1.4.4 | 文件上传 |
+| Mongoose | 8.8.1 | MongoDB ODM |
+| JWT | 9.0.2 | 身份认证 |
+| Bcryptjs | 2.4.3 | 密码加密 |
+| Multer | 1.4.5-lts.1 | 文件上传 |
 
 ## 项目结构
 
@@ -34,8 +35,7 @@ Blog-Website-web/
 ├── client/                    # 前端应用
 │   ├── public/               # 静态资源
 │   │   ├── blog.png          # 博客图片
-│   │   ├── favicon.ico       # 网站图标
-│   │   └── index.html        # HTML 入口
+│   │   └── favicon.ico       # 网站图标
 │   ├── src/                  # 源代码
 │   │   ├── components/       # 组件目录
 │   │   │   ├── account/      # 账户相关组件
@@ -66,15 +66,17 @@ Blog-Website-web/
 │   │   │   ├── config.js     # API 配置
 │   │   │   └── data.js       # 分类数据
 │   │   ├── context/          # React Context
-│   │   │   └── DataProvider.js # 全局状态管理
+│   │   │   └── DataProvider.jsx # 全局状态管理
 │   │   ├── service/          # 服务层
 │   │   │   └── api.js        # API 请求封装
 │   │   ├── utils/            # 工具函数
 │   │   │   └── common-utils.js
-│   │   ├── App.js            # 应用入口组件
+│   │   ├── App.jsx           # 应用入口组件
 │   │   ├── App.css           # 全局样式
 │   │   ├── index.css         # 基础样式
-│   │   └── index.js          # 应用入口
+│   │   └── index.jsx         # 应用入口
+│   ├── index.html            # HTML 模板
+│   ├── vite.config.js        # Vite 配置
 │   ├── .gitignore
 │   ├── package.json
 │   └── package-lock.json
@@ -95,6 +97,7 @@ Blog-Website-web/
 │   │   └── user.js           # 用户模型
 │   ├── routes/               # 路由配置
 │   │   └── route.js          # API 路由
+│   ├── uploads/              # 上传文件目录
 │   ├── utils/                # 工具函数
 │   │   └── upload.js         # 文件上传配置
 │   ├── .env                  # 环境变量
@@ -143,35 +146,36 @@ Blog-Website-web/
 
 | 接口 | 方法 | 路径 | 说明 |
 |------|------|------|------|
-| 用户登录 | POST | `/login` | 用户登录获取 Token |
-| 用户注册 | POST | `/signup` | 新用户注册 |
-| 用户登出 | POST | `/logout` | 用户登出 |
-| Token 刷新 | POST | `/token` | 刷新访问令牌 |
+| 用户登录 | POST | `/api/login` | 用户登录获取 Token |
+| 用户注册 | POST | `/api/signup` | 新用户注册 |
+| 用户登出 | POST | `/api/logout` | 用户登出 |
+| Token 刷新 | POST | `/api/token` | 刷新访问令牌 |
 
 ### 文章接口
 
 | 接口 | 方法 | 路径 | 说明 |
 |------|------|------|------|
-| 创建文章 | POST | `/create` | 创建新文章 |
-| 更新文章 | PUT | `/update/:id` | 更新指定文章 |
-| 删除文章 | DELETE | `/delete/:id` | 删除指定文章 |
-| 获取单篇文章 | GET | `/post/:id` | 获取文章详情 |
-| 获取文章列表 | GET | `/posts` | 获取所有文章，支持分类筛选 |
+| 创建文章 | POST | `/api/create` | 创建新文章 |
+| 更新文章 | PUT | `/api/update/:id` | 更新指定文章 |
+| 删除文章 | DELETE | `/api/delete/:id` | 删除指定文章 |
+| 获取单篇文章 | GET | `/api/post/:id` | 获取文章详情 |
+| 获取文章列表 | GET | `/api/posts` | 获取所有文章，支持分类筛选 |
 
 ### 图片接口
 
 | 接口 | 方法 | 路径 | 说明 |
 |------|------|------|------|
-| 上传图片 | POST | `/file/upload` | 上传文章封面图片 |
-| 获取图片 | GET | `/file/:filename` | 获取图片资源 |
+| 上传图片 | POST | `/api/file/upload` | 上传文章封面图片 |
+| 获取图片 | GET | `/api/file/:filename` | 获取图片资源 |
+| 上传目录 | GET | `/api/uploads/:filename` | 访问上传的文件 |
 
 ### 评论接口
 
 | 接口 | 方法 | 路径 | 说明 |
 |------|------|------|------|
-| 发表评论 | POST | `/comment/new` | 发表新评论 |
-| 获取评论 | GET | `/comments/:id` | 获取文章的所有评论 |
-| 删除评论 | DELETE | `/comment/delete/:id` | 删除指定评论 |
+| 发表评论 | POST | `/api/comment/new` | 发表新评论 |
+| 获取评论 | GET | `/api/comments/:id` | 获取文章的所有评论 |
+| 删除评论 | DELETE | `/api/comment/delete/:id` | 删除指定评论 |
 
 ## 数据模型
 
@@ -213,7 +217,7 @@ Blog-Website-web/
 
 ### 环境要求
 
-- Node.js (推荐 LTS 版本)
+- Node.js 20+ (推荐 LTS 版本)
 - MongoDB (本地或远程)
 
 ### 后端启动
@@ -231,7 +235,7 @@ npm start
 ```bash
 cd client
 npm install
-npm start
+npm run dev
 ```
 
 前端默认运行在 `http://localhost:3000`
@@ -241,17 +245,18 @@ npm start
 在 `server/.env` 文件中配置：
 
 ```
-DB_USERNAME=your_mongodb_username
-DB_PASSWORD=your_mongodb_password
+PORT=8000
+MONGODB_URI=your_mongodb_connection_string
 ACCESS_SECRET_KEY=your_access_secret_key
 REFRESH_SECRET_KEY=your_refresh_secret_key
 ```
 
 ## 项目特点
 
-1. **完整的前后端分离架构**：前端使用 React，后端使用 Express，通过 RESTful API 通信
+1. **完整的前后端分离架构**：前端使用 React + Vite，后端使用 Express，通过 RESTful API 通信
 2. **JWT 身份认证**：实现安全的用户认证和授权机制
-3. **图片上传功能**：支持文章封面图片的上传和展示
+3. **图片上传功能**：支持文章封面图片的上传和展示（使用 multer 磁盘存储）
 4. **分类管理**：支持按分类浏览文章
 5. **响应式设计**：基于 Material-UI 实现响应式布局
 6. **代码结构清晰**：模块化的组件和控制器设计
+7. **现代化构建工具**：使用 Vite 替代 CRA，构建速度更快

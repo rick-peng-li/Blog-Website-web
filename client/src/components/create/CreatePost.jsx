@@ -105,7 +105,7 @@ const CreatePost = () => {
             </StyledFormControl>
 
             <Textarea
-                rowsMin={5}
+                minRows={5}
                 placeholder="Tell your story..."
                 name='description'
                 onChange={(e) => handleChange(e)} 
